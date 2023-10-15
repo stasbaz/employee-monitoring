@@ -40,3 +40,29 @@ export async function addEmployee(connection) {
     console.error('Error adding employee:', error);
   }
 }
+
+export async function updateEmployeeRole(connection) {
+  try {
+    const answers = await inquirer.prompt([
+      {
+        type: 'number',
+        name: 'employee_id',
+        message: 'Enter the ID of the employee you want to update:',
+      },
+      {
+        type: 'number',
+        name: 'new_role_id',
+        message: 'Enter the new role ID for the employee:',
+      },
+    ]);
+
+    await connection.execute(
+      'UPDATE employee SET role_id = ? WHERE id = ?',
+      [answers.new_role_id, answers.employee_id]
+    );
+
+    console.log('Employee role updated.');
+  } catch (error) {
+    console.error('Error updating employee role:', error);
+  }
+}
