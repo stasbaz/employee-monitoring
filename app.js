@@ -1,9 +1,8 @@
 import inquirer from 'inquirer';
 import mysql from 'mysql2/promise';
-import * as departmentQueries from './queries/departmentQueries.mjs';
-import * as roleQueries from './queries/roleQueries.mjs';
-import * as employeeQueries from './queries/employeeQueries.mjs';
-
+import * as departmentQueries from './queries/departmentQueries.js';
+import * as roleQueries from './queries/roleQueries.js';
+import * as employeeQueries from './queries/employeeQueries.js';
 
 async function mainMenu(connection) {
   while (true) {
@@ -44,7 +43,11 @@ async function mainMenu(connection) {
         await roleQueries.addRole(connection);
         break;
       case 'Add an employee':
-        await employeeQueries.addEmployee(connection);
+        
+        const [roleRows] = await connection.query('SELECT id, title FROM role');
+        const [managerRows] = await connection.query('SELECT first_name, last_name, id FROM employee WHERE role_id = 1 OR role_id = 4 OR role_id = 6 OR role_id = 7')
+        await employeeQueries.addEmployee(connection, roleRows, managerRows);
+        
         break;
       case 'Update an employee role':
         await employeeQueries.updateEmployeeRole(connection);
@@ -55,14 +58,6 @@ async function mainMenu(connection) {
         process.exit();
         break;
     }
-  }
-}
-
-export async function viewAllRoles(connection) {
-  try {
-    
-  } catch (error) {
-    console.error('Error viewing roles:', error);
   }
 }
 

@@ -1,12 +1,13 @@
 import inquirer from 'inquirer';
 
 export async function viewAllRoles(connection) {
-  try {
-    const [rows] = await connection.query('SELECT * FROM role');
-    console.table(rows);
-  } catch (error) {
-    console.error('Error viewing roles:', error);
-  }
+  const sql = `
+    SELECT r.id, r.title, r.salary, d.name AS department
+    FROM role r
+    LEFT JOIN department d ON r.department_id = d.id;
+  `;
+  const [rows] = await connection.query(sql);
+  console.table(rows);
 }
 
 export async function addRole(connection) {

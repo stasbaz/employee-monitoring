@@ -3,9 +3,9 @@
   "name": "employee-monitoring",
   "version": "1.0.0",
   "description": "",
-  "main": "app.mjs",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.mjs"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
